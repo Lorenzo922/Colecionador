@@ -29,24 +29,57 @@
 
     button {
       padding: 10px 15px;
-      margin: 5px;
+      margin: 5px 0;
       cursor: pointer;
       border: none;
       border-radius: 5px;
       background: #333;
       color: white;
+      width: 100%;
     }
 
-    .loja, .colecionados {
+    .loja {
       margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .card h4 {
+      margin: 10px 0 5px 0;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .colecionados {
+      margin-top: 30px;
       padding: 15px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .item {
-      margin: 10px 0;
     }
   </style>
 </head>
@@ -57,19 +90,28 @@
     <p><b>Pontos:</b> <span id="pontos">0</span></p>
     <button onclick="ganharPontos()">Ganhar Pontos (+5 até +20)</button>
 
+    <h2>Loja</h2>
     <div class="loja">
-      <h3>Loja</h3>
-      <div class="item">
-        <span>Estrela (custa 30)</span>
-        <button onclick="comprar('Estrela', 30)">Comprar</button>
+      <div class="card">
+        <img src="https://acdn-us.mitiendanube.com/stores/003/993/079/products/design-sem-nome-63-mmm-414113626a6f2bd29c17194431662551-1024-1024.png" alt="Kirby">
+        <h4>Kirby Jogo</h4>
+        <p>150 pontos</p>
+        <button onclick="comprar('Kirby Jogo', 150)">Adicionar</button>
       </div>
-      <div class="item">
-        <span>Lua (custa 50)</span>
-        <button onclick="comprar('Lua', 50)">Comprar</button>
+
+      <div class="card">
+        <img src="https://m.media-amazon.com/images/I/61xjsVCiLVL._UF1000,1000_QL80_.jpg" alt="iPhone">
+        <h4>iPhone</h4>
+        <p>370 pontos</p>
+        <button onclick="comprar('iPhone', 370)">Adicionar</button>
       </div>
-      <div class="item">
-        <span>Fogo (custa 100)</span>
-        <button onclick="comprar('Fogo', 100)">Comprar</button>
+    </div>
+    <br>
+      <div class="card">
+        <img src="https://http2.mlstatic.com/D_NQ_NP_767390-MLA51439543986_092022-O.webp" alt="Mouse">
+        <h4>Mouse</h4>
+        <p>20 pontos</p>
+        <button onclick="comprar('Mouse', 20)">Adicionar</button>
       </div>
     </div>
 
@@ -83,7 +125,6 @@
     let pontos = 0;
     let itens = [];
 
-    // 🔹 Carregar do localStorage ao iniciar
     window.onload = function() {
       let dados = localStorage.getItem("htmlpoints");
       if (dados) {
@@ -108,7 +149,7 @@
         li.textContent = item;
         lista.appendChild(li);
       });
-      salvar(); // salva sempre que atualizar
+      salvar();
     }
 
     function ganharPontos() {
