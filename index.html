@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>HTML Points</title>
+  <title>Shop Points</title>
   <style>
     body {
       margin: 0;
@@ -29,13 +29,12 @@
 
     button {
       padding: 10px 15px;
-      margin: 5px 0;
+      margin: 5px 5px 5px 0;
       cursor: pointer;
       border: none;
       border-radius: 5px;
       background: #333;
       color: white;
-      width: 100%;
     }
 
     .loja {
@@ -62,6 +61,7 @@
       width: 60px;
       height: 60px;
       margin-bottom: 10px;
+      object-fit: contain;
     }
 
     .card h4 {
@@ -81,14 +81,45 @@
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
+    .colecionados ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .colecionados li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .colecionados button {
+      background: crimson;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .botoes-pontos {
+      margin-top: 10px;
+    }
+
   </style>
 </head>
 <body>
-  <div class="topbar">HTML Points</div>
+  <div class="topbar">Shop Points</div>
   <div class="content">
-    <h1>HTML Points</h1>
+    <h1>Shop Points</h1>
     <p><b>Pontos:</b> <span id="pontos">0</span></p>
-    <button onclick="ganharPontos()">Ganhar Pontos (+5 até +20)</button>
+
+    <div class="botoes-pontos">
+      <button onclick="ganharPontos(5)">+5 Pontos</button>
+      <button onclick="ganharPontos(10)">+10 Pontos</button>
+      <button onclick="ganharPontos(15)">+15 Pontos</button>
+      <button onclick="ganharPontos(20)">+20 Pontos</button>
+      <button onclick="ganharPontos(25)">+25 Pontos</button>
+    </div>
 
     <h2>Loja</h2>
     <div class="loja">
@@ -105,13 +136,33 @@
         <p>370 pontos</p>
         <button onclick="comprar('iPhone', 370)">Adicionar</button>
       </div>
-    </div>
-    <br>
+
       <div class="card">
         <img src="https://http2.mlstatic.com/D_NQ_NP_767390-MLA51439543986_092022-O.webp" alt="Mouse">
         <h4>Mouse</h4>
         <p>20 pontos</p>
         <button onclick="comprar('Mouse', 20)">Adicionar</button>
+      </div>
+
+      <div class="card">
+        <img src="https://lojamultilaser.vtexassets.com/arquivos/ids/1502078-800-auto?v=638907701949070000&width=800&height=auto&aspect=true" alt="Notebook">
+        <h4>Notebook</h4>
+        <p>280 pontos</p>
+        <button onclick="comprar('Notebook', 280)">Adicionar</button>
+      </div>
+
+      <div class="card">
+        <img src="https://cdn.prylstaden.se/media/webp_image/catalog/product/cache/f9a43f5010d2bc4f1c3b6cd0667b4271/n/i/nintendo-switch-oled-64gb-neon-joycon.webp" alt="Nintendo Switch">
+        <h4>Nintendo Switch</h4>
+        <p>520 pontos</p>
+        <button onclick="comprar('Nintendo Switch', 500)">Adicionar</button>
+      </div>
+
+      <div class="card">
+        <img src="https://dverr7iyvl0k.cloudfront.net/Custom/Content/Products/13/17/13177_video-game-playstation-5-bundle-slim-disk-1tb-bco-222327_l1_638638915296334479.webp" alt="PlayStation">
+        <h4>PlayStation</h4>
+        <p>650 pontos</p>
+        <button onclick="comprar('PlayStation', 600)">Adicionar</button>
       </div>
     </div>
 
@@ -144,17 +195,19 @@
       document.getElementById("pontos").innerText = pontos;
       let lista = document.getElementById("meusItens");
       lista.innerHTML = "";
-      itens.forEach(item => {
+      itens.forEach((item, index) => {
         let li = document.createElement("li");
-        li.textContent = item;
+        li.innerHTML = `
+          <span>${item}</span>
+          <button onclick="remover(${index})">Remover</button>
+        `;
         lista.appendChild(li);
       });
       salvar();
     }
 
-    function ganharPontos() {
-      let ganho = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
-      pontos += ganho;
+    function ganharPontos(valor) {
+      pontos += valor;
       atualizarTela();
     }
 
@@ -166,6 +219,11 @@
       } else {
         alert("Você não tem pontos suficientes!");
       }
+    }
+
+    function remover(index) {
+      itens.splice(index, 1);
+      atualizarTela();
     }
   </script>
 </body>
