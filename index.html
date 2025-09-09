@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Points</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .topbar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      font-size: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .content {
+      margin-top: 70px;
+      padding: 20px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: white;
+    }
+
+    .loja, .colecionados {
+      margin-top: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .item {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">HTML Points</div>
+  <div class="content">
+    <h1>HTML Points</h1>
+    <p><b>Pontos:</b> <span id="pontos">0</span></p>
+    <button onclick="ganharPontos()">Ganhar Pontos (+5 até +20)</button>
+
+    <div class="loja">
+      <h3>Loja</h3>
+      <div class="item">
+        <span>Estrela (custa 30)</span>
+        <button onclick="comprar('Estrela', 30)">Comprar</button>
+      </div>
+      <div class="item">
+        <span>Lua (custa 50)</span>
+        <button onclick="comprar('Lua', 50)">Comprar</button>
+      </div>
+      <div class="item">
+        <span>Fogo (custa 100)</span>
+        <button onclick="comprar('Fogo', 100)">Comprar</button>
+      </div>
+    </div>
+
+    <div class="colecionados">
+      <h3>Meus Itens</h3>
+      <ul id="meusItens"></ul>
+    </div>
+  </div>
+
+  <script>
+    let pontos = 0;
+    let itens = [];
+
+    // 🔹 Carregar do localStorage ao iniciar
+    window.onload = function() {
+      let dados = localStorage.getItem("htmlpoints");
+      if (dados) {
+        let obj = JSON.parse(dados);
+        pontos = obj.pontos || 0;
+        itens = obj.itens || [];
+      }
+      atualizarTela();
+    }
+
+    function salvar() {
+      let obj = { pontos, itens };
+      localStorage.setItem("htmlpoints", JSON.stringify(obj));
+    }
+
+    function atualizarTela() {
+      document.getElementById("pontos").innerText = pontos;
+      let lista = document.getElementById("meusItens");
+      lista.innerHTML = "";
+      itens.forEach(item => {
+        let li = document.createElement("li");
+        li.textContent = item;
+        lista.appendChild(li);
+      });
+      salvar(); // salva sempre que atualizar
+    }
+
+    function ganharPontos() {
+      let ganho = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
+      pontos += ganho;
+      atualizarTela();
+    }
+
+    function comprar(nome, preco) {
+      if (pontos >= preco) {
+        pontos -= preco;
+        itens.push(nome);
+        atualizarTela();
+      } else {
+        alert("Você não tem pontos suficientes!");
+      }
+    }
+  </script>
+</body>
+</html>
